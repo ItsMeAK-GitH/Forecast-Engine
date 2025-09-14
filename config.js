@@ -40,6 +40,10 @@ module.exports = {
                         bsonType: 'int',
                         minimum: 0,
                         description: '\'age\' must be a non-negative integer if the field exists'
+                    },
+                    city: {
+                        bsonType: 'string',
+                        description: '\'city\' must be a string if the field exists'
                     }
                 }
             }

@@ -3,6 +3,7 @@ const mongodb = require('mongodb');
 
 const { Database } = require('./database');
 const { databaseConfiguration } = require('./config');
+const { getWeather } = require('./services/weather.service');
 
 const { databaseName, collectionName } = databaseConfiguration;
 const connection = Database.connection;
@@ -25,7 +26,7 @@ router.post('/', async (req, res) => {
     const newDocument = req.body;
     let result = await collection.insertOne(newDocument);
 
-    return res.status(204).send(result);
+    return res.status(201).send(result);
 });
 
 // Read (GET) - Get all users
@@ -56,14 +57,46 @@ router.get('/:id', async (req, res) => {
     return res.status(200).send(user);
 });
 
-// Read (GET) - Get a user by email
-router.get('/email/:email', async (req, res) => {
-    const email = req?.params?.email;
-    if (!email) {
-        return res.status(400).send('\'email\' is required');
+// Read (GET) - Get a user's weather by ID
+router.get('/:id/weather', async (req, res) => {
+    const id = req?.params?.id;
+    if (!id) {
+        return res.status(400).send('\'id\' is required');
     }
 
-    const user = await collection.findOne({ email });
+    let _id;
+    try {
+        _id = toObjectId(id);
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+
+    const user = await collection.findOne({ _id });
+    if (!user) {
+        return res.status(404).send('Not found');
+    }
+
+    if (!user.city) {
+        return res.status(400).send('User does not have a city');
+    }
+
+    try {
+        const weather = await getWeather(user.city);
+        return res.status(200).send(weather);
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+});
+
+
+// Read (GET) - Get a user by email or name
+router.get('/query/:query', async (req, res) => {
+    const query = req?.params?.query;
+    if (!query) {
+        return res.status(400).send('\'query\' is required');
+    }
+
+    const user = await collection.findOne({ $or: [{ email: query }, { name: query }] });
     if (!user) {
         return res.status(404).send('User not found');
     }
