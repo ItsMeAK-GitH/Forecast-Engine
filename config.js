@@ -1,52 +1,39 @@
-module.exports = {
-    serverConfiguration: {
-        port: 3000,
-    },
 
-    databaseConfiguration: {
-        /**
-         * Connection URI for the local MongoDB instance, running on the default port.
-         * See https://www.mongodb.com/docs/v6.2/reference/connection-string/ for more details.
-         */
-        uri: 'mongodb://localhost:27017/',
+// Check if MONGODB_URI environment variable is set
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
 
-        /**
-         * Database and collection names. Replace with your own database and collection names.
-         */
-        databaseName: 'my_database',
-        collectionName: 'users',
-
-        /**
-         * Sample validation schema for the 'users' collection. Replace with your own collection schemas.
-         * Schema validation is applied by the database server and is optional when creating a collection.
-         * See https://www.mongodb.com/docs/manual/core/schema-validation/ for more details.
-         */
-        usersCollectionSchema: {
-            $jsonSchema: {
-                bsonType: 'object',
-                title: 'User Document Validation',
-                required: ['name', 'email'],
-                properties: {
-                    name: {
-                        bsonType: 'string',
-                        description: '\'name\' must be a string and is required'
-                    },
-                    email: {
-                        bsonType: 'string',
-                        pattern: '^.+@.+$',
-                        description: '\'email\' must be a valid email address and is required'
-                    },
-                    age: {
-                        bsonType: 'int',
-                        minimum: 0,
-                        description: '\'age\' must be a non-negative integer if the field exists'
-                    },
-                    city: {
-                        bsonType: 'string',
-                        description: '\'city\' must be a string if the field exists'
-                    }
+const databaseConfiguration = {
+    uri: MONGODB_URI,
+    databaseName: 'Forecast-API',
+    collectionName: 'users',
+    usersCollectionSchema: {
+        $jsonSchema: {
+            bsonType: 'object',
+            required: ['name', 'email', 'city'],
+            properties: {
+                name: {
+                    bsonType: 'string',
+                    description: 'must be a string and is required'
+                },
+                email: {
+                    bsonType: 'string',
+                    description: 'must be a string and is required',
+                    pattern: '^.+@.+$'
+                },
+                city: {
+                    bsonType: 'string',
+                    description: 'must be a string and is required'
                 }
             }
         }
     }
+};
+
+const serverConfiguration = {
+    port: process.env.PORT || 3000
+};
+
+module.exports = {
+    databaseConfiguration,
+    serverConfiguration
 };
