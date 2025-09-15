@@ -4,6 +4,14 @@ A CRUD based backend API built with Node.js, Express, and MongoDB - creating, re
 
 The application uses the native MongoDB driver and enforces schema validation at the database level.
 
+## Live API
+
+-   **URL:** [https://forecast-engine-ez22.onrender.com](https://forecast-engine-ez22.onrender.com)
+-   **Status:** The API is live and publicly accessible.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+
 ## Features
 
 -   **CRUD Operations:** Full Create, Read, Update, and Delete functionality for users.
@@ -78,42 +86,42 @@ Replace `<USER_ID>` with an actual user ID from your database.
 
 **Create a user:**
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '''{"name": "Jane Doe", "email": "jane@example.com", "city": "Paris"}''' http://localhost:3000/users
+curl -X POST -H "Content-Type: application/json" -d '''{"name": "Jane Doe", "email": "jane@example.com", "city": "Paris"}''' https://forecast-engine-ez22.onrender.com/users
 ```
 
 **Get all users:**
 ```bash
-curl http://localhost:3000/users
+curl https://forecast-engine-ez22.onrender.com/users
 ```
 
 **Get a single user by ID:**
 ```bash
-curl http://localhost:3000/users/<USER_ID>
+curl https://forecast-engine-ez22.onrender.com/users/<USER_ID>
 ```
 
 **Update a user's city:**
 ```bash
-curl -X PUT -H "Content-Type: application/json" -d '''{"city": "Tokyo"}''' http://localhost:3000/users/<USER_ID>
+curl -X PUT -H "Content-Type: application/json" -d '''{"city": "Tokyo"}''' https://forecast-engine-ez22.onrender.com/users/<USER_ID>
 ```
 
 **Delete a user:**
 ```bash
-curl -X DELETE http://localhost:3000/users/<USER_ID>
+curl -X DELETE https://forecast-engine-ez22.onrender.com/users/<USER_ID>
 ```
 
 **Get a user's weather:**
 ```bash
-curl http://localhost:3000/users/<USER_ID>/weather
+curl https://forecast-engine-ez22.onrender.com/users/<USER_ID>/weather
 ```
 
 **Search for a user (by email):**
 ```bash
-curl http://localhost:3000/users/query/jane@example.com
+curl https://forecast-engine-ez22.onrender.com/users/query/jane@example.com
 ```
 
 **Search for a user (by name with spaces):**
 ```bash
-curl http://localhost:3000/users/query/Jane%20Doe
+curl https://forecast-engine-ez22.onrender.com/users/query/Jane%20Doe
 ```
 
 ## Deployment
